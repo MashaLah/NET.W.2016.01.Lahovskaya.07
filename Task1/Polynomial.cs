@@ -169,6 +169,10 @@ namespace Task1
         /// </summary>
         public override bool Equals(Object o)
         {
+            if (this == null)
+            {
+                throw new NullReferenceException();
+            }                      
             if (o == null)
             {
                 return false;
