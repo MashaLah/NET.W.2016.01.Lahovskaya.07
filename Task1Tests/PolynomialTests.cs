@@ -24,10 +24,10 @@ namespace Task1Tests
         /// A test for constructor with array. Array is empty.
         /// </summary>
         [Test]
-        public void Constructor_ArrayIsEmpty_ThrowArgumentNullException()
+        public void Constructor_ArrayIsEmpty_ThrowArgumentException()
         {
             double[] arr = new double[] { };
-            Assert.Throws<ArgumentNullException>(() => new Polynomial(arr));
+            Assert.Throws<ArgumentException>(() => new Polynomial(arr));
         }
 
         /// <summary>
@@ -63,6 +63,9 @@ namespace Task1Tests
             Assert.True(p2 != null);
         }
 
+        /// <summary>
+        /// A test for Calculate().
+        /// </summary>
         [Test]
         public void Calculate_ValidData_ValidResult()
         {

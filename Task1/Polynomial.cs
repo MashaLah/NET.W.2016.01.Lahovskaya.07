@@ -43,7 +43,7 @@ namespace Task1
 
             if (coefficients.Length == 0)
             {
-                throw new ArithmeticException($"Argument {coefficients} is empty.");
+                throw new ArgumentException($"Argument {coefficients} is empty.");
             }
 
             this.coefficients = new double[coefficients.Length];
