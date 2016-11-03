@@ -45,10 +45,11 @@ namespace Task1Tests
             Polynomial p2 = new Polynomial(arr2);
             Polynomial expected = new Polynomial(arr3);
             Polynomial actual = p1 + p2;
-            for (int i = 0; i < actual.Degree; i++)
+            Assert.True(actual.Equals(expected));
+            /*for (int i = 0; i < actual.Degree; i++)
             {
                 Assert.AreEqual(expected[i], actual[i]);
-            }          
+            }*/          
         }
 
         [Test]
@@ -79,10 +80,24 @@ namespace Task1Tests
             Polynomial p2 = new Polynomial(arr2);
             Polynomial expected = new Polynomial(arr3);
             Polynomial actual = p1 - p2;
-            for (int i = 0; i < actual.Degree; i++)
+            Assert.True(actual.Equals(expected));
+            /*for (int i = 0; i < actual.Degree; i++)
             {
                 Assert.AreEqual(expected[i], actual[i]);
-            }
+            }*/
+        }
+
+        [Test]
+        public void OperatorMultiply_2Polynomials_ValidPolynomial()
+        {
+            double[] arr1 = { 0, 1, 2 };
+            double[] arr2 = { 0, 0, 0, 3, 4 };
+            double[] arr3 = { 0, 0, 0, 0, 3, 10, 8};
+            Polynomial p1 = new Polynomial(arr1);
+            Polynomial p2 = new Polynomial(arr2);
+            Polynomial expected = new Polynomial(arr3);
+            Polynomial actual = p1 * p2;
+            Assert.True(actual.Equals(expected));
         }
     }
 }

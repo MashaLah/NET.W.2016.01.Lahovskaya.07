@@ -102,6 +102,22 @@ namespace Task1
             return result;
         }
 
+        /// <summary>
+        /// Multiplies two polynomials.
+        /// </summary>
+        public static Polynomial operator *(Polynomial firstPolynomial, Polynomial secondPolynomial)
+        {
+            double[] resultArray = new double[firstPolynomial.Degree + secondPolynomial.Degree -1];
+            Polynomial result = new Polynomial(resultArray);
+            for (int i = 0; i < firstPolynomial.Degree; i++)
+            {
+                for (int j = 0; j < secondPolynomial.Degree; j++)
+                {
+                    result[i + j] += firstPolynomial[i] * secondPolynomial[j];
+                }
+            }
+            return result;
+        }
 
         /// <summary>
         /// Override Equals().
@@ -136,8 +152,6 @@ namespace Task1
                 }
             }
             return true;
-
-            //return base.Equals(obj);
         }
     }
 }
