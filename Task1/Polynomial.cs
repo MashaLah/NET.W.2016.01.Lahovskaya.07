@@ -22,10 +22,18 @@ namespace Task1
         {
             get
             {
+                if (i < 0 || i > Degree)
+                {
+                    throw new ArgumentOutOfRangeException($"{nameof(i)} can't be <0 and can't be bigger tham Degree.");
+                }
                 return coefficients[i];
             }
             set
             {
+                if (i < 0 || i > Degree)
+                {
+                    throw new ArgumentOutOfRangeException($"{nameof(i)} can't be <0 and can't be bigger tham Degree.");
+                }
                 coefficients[i] = value;
             }
         }
