@@ -105,16 +105,19 @@ namespace Task1
             {
                 return true;
             }
-            Polynomial p = (Polynomial)o;
-            if (this.Degree != p.Degree)
+            if (o is Polynomial)
             {
-                return false;
-            }
-            for (int i = 0; i < Degree; i++)
-            {
-                if (this[i].Equals(p[i]))
+                Polynomial p = o as Polynomial;
+                if (this.Degree != p.Degree)
                 {
                     return false;
+                }
+                for (int i = 0; i < Degree; i++)
+                {
+                    if (!this[i].Equals(p[i]))
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
