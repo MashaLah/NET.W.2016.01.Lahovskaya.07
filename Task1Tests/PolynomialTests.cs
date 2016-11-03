@@ -68,5 +68,21 @@ namespace Task1Tests
             Polynomial p2 = p1;
             Assert.True(p1.Equals(p2));
         }
+
+        [Test]
+        public void OperatorMinus_2Polynomials_ValidPolynomial()
+        {
+            double[] arr1 = { 1, 0, 3, 2, 7 };
+            double[] arr2 = { 2, -2, 6, 2 };
+            double[] arr3 = { -1, 2, -3, 0, 7 };
+            Polynomial p1 = new Polynomial(arr1);
+            Polynomial p2 = new Polynomial(arr2);
+            Polynomial expected = new Polynomial(arr3);
+            Polynomial actual = p1 - p2;
+            for (int i = 0; i < actual.Degree; i++)
+            {
+                Assert.AreEqual(expected[i], actual[i]);
+            }
+        }
     }
 }

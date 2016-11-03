@@ -89,6 +89,21 @@ namespace Task1
         }
 
         /// <summary>
+        /// Finds subtraction of two polynomials.
+        /// </summary>
+        public static Polynomial operator -(Polynomial firstPolynomial, Polynomial secondPolynomial)
+        {
+            Polynomial subtrahendPolynomial = new Polynomial(secondPolynomial);
+            for (int i = 0; i < subtrahendPolynomial.Degree; i++)
+            {
+                subtrahendPolynomial[i] = -subtrahendPolynomial[i];
+            }
+            Polynomial result = firstPolynomial + subtrahendPolynomial;
+            return result;
+        }
+
+
+        /// <summary>
         /// Override Equals().
         /// </summary>
         public override bool Equals(Object o)
@@ -114,7 +129,7 @@ namespace Task1
                 }
                 for (int i = 0; i < Degree; i++)
                 {
-                    if (!this[i].Equals(p[i]))
+                    if (!(this[i]==(p[i])))
                     {
                         return false;
                     }
