@@ -36,6 +36,16 @@ namespace Task1
         /// <param name="coefficients">Array of double.</param>
         public Polynomial(double[] coefficients)
         {
+            if (coefficients == null)
+            {
+                throw new ArgumentNullException($"Argument {coefficients} is null.");
+            }
+
+            if (coefficients.Length == 0)
+            {
+                throw new ArithmeticException($"Argument {coefficients} is empty.");
+            }
+
             this.coefficients = new double[coefficients.Length];
 
             for (int i = 0; i < coefficients.Length; i++)
@@ -50,6 +60,11 @@ namespace Task1
         /// <param name="p">Polynomial object.</param>
         public Polynomial(Polynomial p)
         {
+            if (p == null)
+            {
+                throw new ArgumentNullException($"Argument {p} is null.");
+            }
+
             coefficients = new double[p.Degree];
 
             for (int i = 0; i < p.Degree; i++)
@@ -78,6 +93,16 @@ namespace Task1
         /// </summary>
         public static Polynomial operator +(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
+            if (firstPolynomial == null)
+            {
+                throw new ArgumentNullException($"Argument {firstPolynomial} is null.");
+            }
+
+            if (secondPolynomial == null)
+            {
+                throw new ArgumentNullException($"Argument {secondPolynomial} is null.");
+            }
+
             Polynomial maxDegreePolynomial = firstPolynomial.Degree > secondPolynomial.Degree ? firstPolynomial : secondPolynomial;
             Polynomial minDegreePolynomial = firstPolynomial.Degree < secondPolynomial.Degree ? firstPolynomial : secondPolynomial;
             Polynomial result = new Polynomial(maxDegreePolynomial);
@@ -93,6 +118,16 @@ namespace Task1
         /// </summary>
         public static Polynomial operator -(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
+            if (firstPolynomial == null)
+            {
+                throw new ArgumentNullException($"Argument {firstPolynomial} is null.");
+            }
+
+            if (secondPolynomial == null)
+            {
+                throw new ArgumentNullException($"Argument {secondPolynomial} is null.");
+            }
+
             Polynomial subtrahendPolynomial = new Polynomial(secondPolynomial);
             for (int i = 0; i < subtrahendPolynomial.Degree; i++)
             {
@@ -107,6 +142,16 @@ namespace Task1
         /// </summary>
         public static Polynomial operator *(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
+            if (firstPolynomial == null)
+            {
+                throw new ArgumentNullException($"Argument {firstPolynomial} is null.");
+            }
+
+            if (secondPolynomial == null)
+            {
+                throw new ArgumentNullException($"Argument {secondPolynomial} is null.");
+            }
+
             double[] resultArray = new double[firstPolynomial.Degree + secondPolynomial.Degree -1];
             Polynomial result = new Polynomial(resultArray);
             for (int i = 0; i < firstPolynomial.Degree; i++)
