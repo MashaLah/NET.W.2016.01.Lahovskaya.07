@@ -116,16 +116,13 @@ namespace Task1Tests
             Assert.True(p1.Equals(p2));
         }
 
-        [Test]
-        public void OperatorMinus_2Polynomials_ValidPolynomial()
+        /// <summary>
+        /// A test for - with valid data.
+        /// </summary>
+        [Test,TestCaseSource(nameof(TestCasesForMinus))]
+        public void OperatorMinus_2Polynomials_ValidPolynomial(Polynomial firstPolynomial, Polynomial secondPolynomial, Polynomial expected)
         {
-            double[] arr1 = { 1, 0, 3, 2, 7 };
-            double[] arr2 = { 2, -2, 6, 2 };
-            double[] arr3 = { -1, 2, -3, 0, 7 };
-            Polynomial p1 = new Polynomial(arr1);
-            Polynomial p2 = new Polynomial(arr2);
-            Polynomial expected = new Polynomial(arr3);
-            Polynomial actual = p1 - p2;
+            Polynomial actual = firstPolynomial - secondPolynomial;
             Assert.True(actual.Equals(expected));
         }
 
@@ -148,6 +145,10 @@ namespace Task1Tests
         static double[] arr1 = { 1, 2, 3, 0 };
         static double[] arr2 = { 1, 0, 3, 2 };
         static double[] arr3 = { 2, 2, 6, 2 };
+
+        static double[] arrFirstMinus = { 1, 0, 3, 2, 7 };
+        static double[] arrSecondMinus = { 2, -2, 6, 2 };
+        static double[] arrExpectedMinus = { -1, 2, -3, 0, 7 };
 
         /// <summary>
         /// TestCases for Calculate() method.
@@ -197,6 +198,18 @@ namespace Task1Tests
                 yield return new TestCaseData(new Polynomial(arr1), null, false);
                 yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arr1),true);
                 yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arr2), false);
+            }
+        }
+
+        /// <summary>
+        /// TestCases for -.
+        /// </summary>
+        public static IEnumerable TestCasesForMinus
+        {
+            get
+            {
+                yield return new TestCaseData(new Polynomial(arrFirstMinus), new Polynomial(arrSecondMinus), new Polynomial(arrExpectedMinus));
+                yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arrayWith0), new Polynomial(arr1));
             }
         }
     }
