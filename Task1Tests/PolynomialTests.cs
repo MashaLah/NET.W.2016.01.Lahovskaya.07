@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Task1;
+using System.Collections;
 
 namespace Task1Tests
 {
@@ -48,7 +49,7 @@ namespace Task1Tests
         {
             double[] arr = { 1, 2, 3, 0 };
             Polynomial p = new Polynomial(arr);
-            Assert.True(p!=null);
+            Assert.True(p != null);
         }
 
         /// <summary>
@@ -66,27 +67,21 @@ namespace Task1Tests
         /// <summary>
         /// A test for Calculate().
         /// </summary>
-        [Test]
-        public void Calculate_ValidData_ValidResult()
+        [Test,TestCaseSource(nameof(TestCasesForCalculate))]
+        public void Calculate_ValidData_ValidResult(double x, double[] arr, double expected)
         {
-            double x = 1;
-            double[] arr = { 1, 2, 3, 0 };
             Polynomial p = new Polynomial(arr);
             double actual = p.Calculate(x);
-            double expected = 6;
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void SumOperator_2Polynomial_ValidPolyndromial()
+        /// <summary>
+        /// A test for + with valid data.
+        /// </summary>
+        [Test,TestCaseSource(nameof(TestCasesForSum))]
+        public void SumOperator_2Polynomial_ValidPolyndromial(Polynomial firstPolynomial, Polynomial secondPolynomial, Polynomial expected)
         {
-            double[] arr1 = { 1, 2, 3, 0 };
-            double[] arr2 = { 1, 0, 3, 2 };
-            double[] arr3 = { 2, 2, 6, 2 };
-            Polynomial p1 = new Polynomial(arr1);
-            Polynomial p2 = new Polynomial(arr2);
-            Polynomial expected = new Polynomial(arr3);
-            Polynomial actual = p1 + p2;
+            Polynomial actual = firstPolynomial + secondPolynomial;
             Assert.True(actual.Equals(expected));        
         }
 
@@ -132,6 +127,38 @@ namespace Task1Tests
             Polynomial expected = new Polynomial(arr3);
             Polynomial actual = p1 * p2;
             Assert.True(actual.Equals(expected));
+        }
+
+        static double[] arr = { 1, -2, 3, 0 };
+        static double[] arrayWith0 = { 0 };
+
+        static double[] arr1 = { 1, 2, 3, 0 };
+        static double[] arr2 = { 1, 0, 3, 2 };
+        static double[] arr3 = { 2, 2, 6, 2 };
+
+        /// <summary>
+        /// TestCases for Calculate() method.
+        /// </summary>
+        public static IEnumerable TestCasesForCalculate
+        {
+            get
+            {
+                yield return new TestCaseData(1, arr, 2);
+                yield return new TestCaseData(-3, arr, 34);
+                yield return new TestCaseData(-3, arrayWith0, 0);
+            }
+        }
+
+        /// <summary>
+        /// TestCases for Calculate() method.
+        /// </summary>
+        public static IEnumerable TestCasesForSum
+        {
+            get
+            {
+                yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arr2), new Polynomial(arr3));
+                yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arrayWith0), new Polynomial(arr1));
+            }
         }
     }
 }
