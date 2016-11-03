@@ -88,7 +88,7 @@ namespace Task1Tests
         /// <summary>
         /// A test for + with not valid data.
         /// </summary>
-        [Test,TestCaseSource(nameof(TestCasesForSumException))]
+        [Test,TestCaseSource(nameof(TestCasesForException))]
         public void SumOperator_NullInput_ThrowArgumentNullException(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
             Assert.Throws<ArgumentNullException>(() => { Polynomial p = firstPolynomial + secondPolynomial; } );
@@ -129,7 +129,7 @@ namespace Task1Tests
         /// <summary>
         /// A test for - with not valid data.
         /// </summary>
-        [Test, TestCaseSource(nameof(TestCasesForMinusException))]
+        [Test, TestCaseSource(nameof(TestCasesForException))]
         public void OperatorMinus_NullInput_ThrowArgumentNullException(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
             Assert.Throws<ArgumentNullException>(() => { Polynomial p = firstPolynomial - secondPolynomial; });
@@ -138,17 +138,20 @@ namespace Task1Tests
         /// <summary>
         /// A test for *.
         /// </summary>
-        [Test]
-        public void OperatorMultiply_2Polynomials_ValidPolynomial()
+        [Test,TestCaseSource(nameof(TestCasesForMyltiply))]
+        public void OperatorMultiply_2Polynomials_ValidPolynomial(Polynomial firstPolynomial, Polynomial secondPolynomial, Polynomial expected)
         {
-            double[] arr1 = { 0, 1, 2 };
-            double[] arr2 = { 0, 0, 0, 3, 4 };
-            double[] arr3 = { 0, 0, 0, 0, 3, 10, 8};
-            Polynomial p1 = new Polynomial(arr1);
-            Polynomial p2 = new Polynomial(arr2);
-            Polynomial expected = new Polynomial(arr3);
-            Polynomial actual = p1 * p2;
+            Polynomial actual = firstPolynomial * secondPolynomial;
             Assert.True(actual.Equals(expected));
+        }
+
+        /// <summary>
+        /// A test for - with not valid data.
+        /// </summary>
+        [Test, TestCaseSource(nameof(TestCasesForException))]
+        public void OperatorMultiply_NullInput_ThrowArgumentNullException(Polynomial firstPolynomial, Polynomial secondPolynomial)
+        {
+            Assert.Throws<ArgumentNullException>(() => { Polynomial p = firstPolynomial * secondPolynomial; });
         }
 
         static double[] arr = { 1, -2, 3, 0 };
@@ -161,6 +164,10 @@ namespace Task1Tests
         static double[] arrFirstMinus = { 1, 0, 3, 2, 7 };
         static double[] arrSecondMinus = { 2, -2, 6, 2 };
         static double[] arrExpectedMinus = { -1, 2, -3, 0, 7 };
+
+        static double[] arrFirstMult = { 0, 1, 2 };
+        static double[] arrSecondMult = { 0, 0, 0, 3, 4 };
+        static double[] arrExpectedMult = { 0, 0, 0, 0, 3, 10, 8 };
 
         /// <summary>
         /// TestCases for Calculate() method.
@@ -184,19 +191,6 @@ namespace Task1Tests
             {
                 yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arr2), new Polynomial(arr3));
                 yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arrayWith0), new Polynomial(arr1));
-            }
-        }
-
-        /// <summary>
-        /// TestCases for + exceptions.
-        /// </summary>
-        public static IEnumerable TestCasesForSumException
-        {
-            get
-            {
-                yield return new TestCaseData(null, new Polynomial(arr2));
-                yield return new TestCaseData(new Polynomial(arr1), null);
-                yield return new TestCaseData(null, null);
             }
         }
 
@@ -226,15 +220,27 @@ namespace Task1Tests
         }
 
         /// <summary>
-        /// TestCases for + exceptions.
+        /// TestCases for exceptions.
         /// </summary>
-        public static IEnumerable TestCasesForMinusException
+        public static IEnumerable TestCasesForException
         {
             get
             {
                 yield return new TestCaseData(null, new Polynomial(arr2));
                 yield return new TestCaseData(new Polynomial(arr1), null);
                 yield return new TestCaseData(null, null);
+            }
+        }
+
+        /// <summary>
+        /// TestCases for *.
+        /// </summary>
+        public static IEnumerable TestCasesForMyltiply
+        {
+            get
+            {
+                yield return new TestCaseData(new Polynomial(arrFirstMult), new Polynomial(arrSecondMult), new Polynomial(arrExpectedMult));
+                //yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arrayWith0), new Polynomial(arrayWith0));
             }
         }
     }
