@@ -13,7 +13,6 @@ namespace Task1Tests
         [Test]
         public void Constructor_Test()
         {
-            //double x = 1;
             double[] arr = { 1, 2, 3, 0 };
             Polynomial p = new Polynomial(arr);
             double[] pArr = new double[4];
@@ -45,11 +44,7 @@ namespace Task1Tests
             Polynomial p2 = new Polynomial(arr2);
             Polynomial expected = new Polynomial(arr3);
             Polynomial actual = p1 + p2;
-            Assert.True(actual.Equals(expected));
-            /*for (int i = 0; i < actual.Degree; i++)
-            {
-                Assert.AreEqual(expected[i], actual[i]);
-            }*/          
+            Assert.True(actual.Equals(expected));        
         }
 
         [Test]
@@ -81,10 +76,6 @@ namespace Task1Tests
             Polynomial expected = new Polynomial(arr3);
             Polynomial actual = p1 - p2;
             Assert.True(actual.Equals(expected));
-            /*for (int i = 0; i < actual.Degree; i++)
-            {
-                Assert.AreEqual(expected[i], actual[i]);
-            }*/
         }
 
         [Test]

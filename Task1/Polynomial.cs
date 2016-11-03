@@ -8,7 +8,7 @@ namespace Task1
 {
     public class Polynomial
     {
-        private readonly double[] coefficients;
+        private double[] coefficients;
 
         public int Degree
         {
