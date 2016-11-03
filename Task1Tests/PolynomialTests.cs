@@ -94,17 +94,21 @@ namespace Task1Tests
             Assert.Throws<ArgumentNullException>(() => { Polynomial p = firstPolynomial + secondPolynomial; } );
         }
 
-        [Test]
-        public void Equal_ValidPolynomialObject_True()
+        /// <summary>
+        /// A test for Equals.
+        /// </summary>
+        [Test,TestCaseSource(nameof(TestCasesForEquals))]
+        public void Equals_ValidPolynomialObject_True(Polynomial firstPolynomial, Polynomial secondPolynomial, bool expected)
         {
-            double[] arr1 = { 1, 2, 3, 0 };
-            Polynomial p1 = new Polynomial(arr1);
-            Polynomial p2 = new Polynomial(arr1);
-            Assert.True(p1.Equals(p2));
+            bool actual = firstPolynomial.Equals(secondPolynomial);
+            Assert.AreEqual(actual,expected);
         }
 
+        /// <summary>
+        /// A test for Equals with 2 referenses to 1 object.
+        /// </summary>
         [Test]
-        public void Equal_SameReference_True()
+        public void Equals_SameReference_True()
         {
             double[] arr1 = { 1, 2, 3, 0 };
             Polynomial p1 = new Polynomial(arr1);
@@ -159,7 +163,7 @@ namespace Task1Tests
         }
 
         /// <summary>
-        /// TestCases for Calculate() method.
+        /// TestCases for +.
         /// </summary>
         public static IEnumerable TestCasesForSum
         {
@@ -170,6 +174,9 @@ namespace Task1Tests
             }
         }
 
+        /// <summary>
+        /// TestCases for + exceptions.
+        /// </summary>
         public static IEnumerable TestCasesForSumException
         {
             get
@@ -177,6 +184,19 @@ namespace Task1Tests
                 yield return new TestCaseData(null, new Polynomial(arr2));
                 yield return new TestCaseData(new Polynomial(arr1), null);
                 yield return new TestCaseData(null, null);
+            }
+        }
+
+        /// <summary>
+        /// A test for Equals().
+        /// </summary>
+        public static IEnumerable TestCasesForEquals
+        {
+            get
+            {
+                yield return new TestCaseData(new Polynomial(arr1), null, false);
+                yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arr1),true);
+                yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arr2), false);
             }
         }
     }
