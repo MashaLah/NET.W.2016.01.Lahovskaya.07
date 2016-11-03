@@ -85,6 +85,15 @@ namespace Task1Tests
             Assert.True(actual.Equals(expected));        
         }
 
+        /// <summary>
+        /// A test for + with not valid data.
+        /// </summary>
+        [Test,TestCaseSource(nameof(TestCasesForSumException))]
+        public void SumOperator_NullInput_ThrowArgumentNullException(Polynomial firstPolynomial, Polynomial secondPolynomial)
+        {
+            Assert.Throws<ArgumentNullException>(() => { Polynomial p = firstPolynomial + secondPolynomial; } );
+        }
+
         [Test]
         public void Equal_ValidPolynomialObject_True()
         {
@@ -158,6 +167,16 @@ namespace Task1Tests
             {
                 yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arr2), new Polynomial(arr3));
                 yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arrayWith0), new Polynomial(arr1));
+            }
+        }
+
+        public static IEnumerable TestCasesForSumException
+        {
+            get
+            {
+                yield return new TestCaseData(null, new Polynomial(arr2));
+                yield return new TestCaseData(new Polynomial(arr1), null);
+                yield return new TestCaseData(null, null);
             }
         }
     }
