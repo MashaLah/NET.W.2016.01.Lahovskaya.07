@@ -36,7 +36,7 @@ namespace Task1Tests
         }
 
         [Test]
-        public void CalculateSum_ValidPolynomial_DoubleArray()
+        public void SumOperator_2Polynomial_ValidPolyndromial()
         {
             double[] arr1 = { 1, 2, 3, 0 };
             double[] arr2 = { 1, 0, 3, 2 };
@@ -49,6 +49,24 @@ namespace Task1Tests
             {
                 Assert.AreEqual(expected[i], actual[i]);
             }          
+        }
+
+        [Test]
+        public void Equal_ValidPolynomialObject_True()
+        {
+            double[] arr1 = { 1, 2, 3, 0 };
+            Polynomial p1 = new Polynomial(arr1);
+            Polynomial p2 = new Polynomial(arr1);
+            Assert.True(p1.Equals(p2));
+        }
+
+        [Test]
+        public void Equal_SameReference_True()
+        {
+            double[] arr1 = { 1, 2, 3, 0 };
+            Polynomial p1 = new Polynomial(arr1);
+            Polynomial p2 = p1;
+            Assert.True(p1.Equals(p2));
         }
     }
 }
