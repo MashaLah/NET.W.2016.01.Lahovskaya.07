@@ -13,9 +13,9 @@ namespace Task1Tests
         [Test]
         public void Constructor_Test()
         {
-            double x = 1;
+            //double x = 1;
             double[] arr = { 1, 2, 3, 0 };
-            Polynomial p = new Polynomial(x, arr);
+            Polynomial p = new Polynomial(arr);
             double[] pArr = new double[4];
             for (int i = 0; i < 4; i++)
             {
@@ -29,8 +29,8 @@ namespace Task1Tests
         {
             double x = 1;
             double[] arr = { 1, 2, 3, 0 };
-            Polynomial p = new Polynomial(x, arr);
-            double actual = p.Calculate();
+            Polynomial p = new Polynomial(arr);
+            double actual = p.Calculate(x);
             double expected = 6;
             Assert.AreEqual(expected, actual);
         }
@@ -38,7 +38,17 @@ namespace Task1Tests
         [Test]
         public void CalculateSum_ValidPolynomial_DoubleArray()
         {
-
+            double[] arr1 = { 1, 2, 3, 0 };
+            double[] arr2 = { 1, 0, 3, 2 };
+            double[] arr3 = { 2, 2, 6, 2 };
+            Polynomial p1 = new Polynomial(arr1);
+            Polynomial p2 = new Polynomial(arr2);
+            Polynomial expected = new Polynomial(arr3);
+            Polynomial actual = p1 + p2;
+            for (int i = 0; i < actual.Degree; i++)
+            {
+                Assert.AreEqual(expected[i], actual[i]);
+            }          
         }
     }
 }

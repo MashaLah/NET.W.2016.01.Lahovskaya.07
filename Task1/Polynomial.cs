@@ -9,9 +9,9 @@ namespace Task1
     public class Polynomial
     {
         private readonly double[] coefficients;
-        private readonly double x;
+        //private double x;
         //private int degree;
-        //public double X {private get; set; }
+        public double X {private get; set; }
         //public int Degree { get; set; }
         public int Degree
         {
@@ -28,9 +28,9 @@ namespace Task1
                 coefficients[i] = value;
             }
         }
-        public Polynomial(double x, double[] coefficients)
+        public Polynomial(double[] coefficients)
         {
-            this.x = x;
+            //this.x = x;
             /*this.coefficients = new double[coefficients.Length];
             coefficients.CopyTo(this.coefficients, 0);*/
             this.coefficients = new double[coefficients.Length];
@@ -40,7 +40,16 @@ namespace Task1
             }
         }
 
-        public double Calculate()
+        public Polynomial(Polynomial p)
+        {
+            this.coefficients = new double[p.Degree];
+            for (int i = 0; i < p.Degree; i++)
+            {
+                this[i] = p[i];
+            }
+        }
+
+        public double Calculate(double x)
         {
             double result = 0;
             for(int i = 0; i < Degree; i++)
@@ -50,17 +59,21 @@ namespace Task1
             return result;
         }
 
-        public double[] CalculateSum(Polynomial firstPolynomial, Polynomial secondPolynomial)
+        public static Polynomial operator +(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
             Polynomial maxDegreePolynomial = firstPolynomial.Degree > secondPolynomial.Degree ? firstPolynomial : secondPolynomial;
             Polynomial minDegreePolynomial = firstPolynomial.Degree < secondPolynomial.Degree ? firstPolynomial : secondPolynomial;
-            double[] resultArray = new double[maxDegreePolynomial.Degree];
+            double[] arr = new double[maxDegreePolynomial.Degree];
+            for (int i = 0; i < maxDegreePolynomial.Degree; i++)
+            {
+                arr[i] = maxDegreePolynomial[i];
+            }
             for (int i = 0; i < minDegreePolynomial.Degree; i++)
             {
-                resultArray[i] = firstPolynomial[i] + secondPolynomial[i];
+                arr[i] = firstPolynomial[i] + secondPolynomial[i];
             }
-            
-            return resultArray;
+            Polynomial result = new Polynomial(arr);
+            return result;
         }
     }
 }
