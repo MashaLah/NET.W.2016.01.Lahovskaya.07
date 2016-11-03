@@ -126,6 +126,18 @@ namespace Task1Tests
             Assert.True(actual.Equals(expected));
         }
 
+        /// <summary>
+        /// A test for - with not valid data.
+        /// </summary>
+        [Test, TestCaseSource(nameof(TestCasesForMinusException))]
+        public void OperatorMinus_NullInput_ThrowArgumentNullException(Polynomial firstPolynomial, Polynomial secondPolynomial)
+        {
+            Assert.Throws<ArgumentNullException>(() => { Polynomial p = firstPolynomial - secondPolynomial; });
+        }
+        
+        /// <summary>
+        /// A test for *.
+        /// </summary>
         [Test]
         public void OperatorMultiply_2Polynomials_ValidPolynomial()
         {
@@ -210,6 +222,19 @@ namespace Task1Tests
             {
                 yield return new TestCaseData(new Polynomial(arrFirstMinus), new Polynomial(arrSecondMinus), new Polynomial(arrExpectedMinus));
                 yield return new TestCaseData(new Polynomial(arr1), new Polynomial(arrayWith0), new Polynomial(arr1));
+            }
+        }
+
+        /// <summary>
+        /// TestCases for + exceptions.
+        /// </summary>
+        public static IEnumerable TestCasesForMinusException
+        {
+            get
+            {
+                yield return new TestCaseData(null, new Polynomial(arr2));
+                yield return new TestCaseData(new Polynomial(arr1), null);
+                yield return new TestCaseData(null, null);
             }
         }
     }
