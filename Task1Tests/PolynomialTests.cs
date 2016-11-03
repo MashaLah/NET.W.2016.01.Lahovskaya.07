@@ -10,6 +10,36 @@ namespace Task1Tests
 {
     public class PolynomialTests
     {
+        /// <summary>
+        /// A test for constructor with array. Array is null.
+        /// </summary>
+        [Test]
+        public void Constructor_ArrayIsNull_ThrowArgumentNullException()
+        {
+            double[] arr = null;
+            Assert.Throws<ArgumentNullException>(() => new Polynomial(arr));
+        }
+
+        /// <summary>
+        /// A test for constructor with array. Array is empty.
+        /// </summary>
+        [Test]
+        public void Constructor_ArrayIsEmpty_ThrowArgumentNullException()
+        {
+            double[] arr = new double[] { };
+            Assert.Throws<ArgumentNullException>(() => new Polynomial(arr));
+        }
+
+        /// <summary>
+        /// A test for constructor with polynomial. polynomial is null.
+        /// </summary>
+        [Test]
+        public void Constructor_PolynomialIsNull_ThrowArgumentNullException()
+        {
+            Polynomial p = null;
+            Assert.Throws<ArgumentNullException>(() => new Polynomial(p));
+        }
+
         [Test]
         public void Constructor_Test()
         {
