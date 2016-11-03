@@ -40,17 +40,27 @@ namespace Task1Tests
             Assert.Throws<ArgumentNullException>(() => new Polynomial(p));
         }
 
+        /// <summary>
+        /// A test for constructor with array.
+        /// </summary>
         [Test]
-        public void Constructor_Test()
+        public void Constructor_Array_True()
         {
             double[] arr = { 1, 2, 3, 0 };
             Polynomial p = new Polynomial(arr);
-            double[] pArr = new double[4];
-            for (int i = 0; i < 4; i++)
-            {
-                pArr[i] = p[i];
-            }
-            Console.WriteLine(pArr.ToString());
+            Assert.True(p!=null);
+        }
+
+        /// <summary>
+        /// A test for constructor with polynomial.
+        /// </summary>
+        [Test]
+        public void Constructor_Polynomial_True()
+        {
+            double[] arr = { 1, 2, 3, 0 };
+            Polynomial p1 = new Polynomial(arr);
+            Polynomial p2 = new Polynomial(p1);
+            Assert.True(p2 != null);
         }
 
         [Test]
