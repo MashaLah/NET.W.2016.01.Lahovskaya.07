@@ -144,6 +144,9 @@ namespace Task1
             return polynomial + x;
         }
 
+        public static Polynomial Add(Polynomial firstPolynomial, Polynomial secondPolynomial) =>
+            firstPolynomial + secondPolynomial;
+
         public static Polynomial operator -(Polynomial polynomial)
         {
             if (ReferenceEquals(polynomial, null))
@@ -181,6 +184,9 @@ namespace Task1
                 throw new ArgumentNullException(nameof(polynomial));
             return x + (-polynomial);
         }
+
+        public static Polynomial Substract(Polynomial firstPolynomial, Polynomial secondPolynomial) =>
+            firstPolynomial - secondPolynomial;
 
         /// <summary>
         /// Multiplies two polynomials.
@@ -220,43 +226,45 @@ namespace Task1
             return polynomial * x;
         }
 
+        public static Polynomial Multiply(Polynomial firstPolynomial, Polynomial secondPolynomial) =>
+            firstPolynomial * secondPolynomial;
+
         /// <summary>
         /// Override Equals().
         /// </summary>
         public override bool Equals(Object o)
-        {
-            if (this == null)
-            {
-                throw new NullReferenceException();
-            }                      
-            if (o == null)
-            {
+        {                      
+            if (ReferenceEquals(o,null))
                 return false;
-            }
-            if (this.GetType() != o.GetType())
-            {
-                return false;
-            }
+
             if (ReferenceEquals(this, o))
-            {
                 return true;
-            }
-            if (o is Polynomial)
+
+            if (this.GetType() != o.GetType())
+                return false;
+
+            Polynomial polynomial = o as Polynomial;
+            return Equals(polynomial);
+        }
+
+        public bool Equals(Polynomial polynomial)
+        {
+            if (this.Degree != polynomial.Degree)
+                return false;
+            for (int i = 0; i < Degree; i++)
             {
-                Polynomial p = o as Polynomial;
-                if (this.Degree != p.Degree)
-                {
+                if (Math.Abs(this[i] - polynomial[i]) > epsilon)
                     return false;
-                }
-                for (int i = 0; i < Degree; i++)
-                {
-                    if (!(this[i]==(p[i])))
-                    {
-                        return false;
-                    }
-                }
             }
             return true;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((coefficients!=null?coefficients.GetHashCode():0)*345)^ Degree;
+            }
         }
     }
 }
