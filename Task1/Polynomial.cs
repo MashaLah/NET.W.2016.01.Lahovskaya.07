@@ -257,8 +257,7 @@ namespace Task1
             if (this.GetType() != o.GetType())
                 return false;
 
-            Polynomial polynomial = o as Polynomial;
-            return Equals(polynomial);
+            return Equals((Polynomial)o);
         }
 
         public bool Equals(Polynomial polynomial)
