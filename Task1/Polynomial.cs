@@ -229,6 +229,20 @@ namespace Task1
         public static Polynomial Multiply(Polynomial firstPolynomial, Polynomial secondPolynomial) =>
             firstPolynomial * secondPolynomial;
 
+        public static bool operator ==(Polynomial firstPolynomial, Polynomial secondPolynomial)
+        {
+            if (ReferenceEquals(firstPolynomial, secondPolynomial))
+                return true;
+
+            if (ReferenceEquals(secondPolynomial, null))
+                return false;
+
+            return firstPolynomial.Equals(secondPolynomial);
+        }
+
+        public static bool operator !=(Polynomial firstPolynomial, Polynomial secondPolynomial)=>
+            !(firstPolynomial==secondPolynomial);
+
         /// <summary>
         /// Override Equals().
         /// </summary>
