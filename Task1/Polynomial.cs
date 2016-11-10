@@ -3,16 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Task1
 {
-    public class Polynomial
+    public sealed class Polynomial
     {
         private double[] coefficients;
+        public static double epsilon;
+        public static double Epsilon
+        {
+            get { return epsilon; }
+            private set
+            {
+                if (value <= 0 || value >= 1)
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                epsilon = value;
+            }
+        }
 
         public int Degree
         {
-            get { return coefficients.Length; }
+            get
+            {
+                if (coefficients.Length == 1)
+                    return 0;
+                int i;
+                for (i = coefficients.Length - 1; i >= 0; i--)
+                {
+                    if (Math.Abs(coefficients[i]) > epsilon)
+                        break;
+                }
+                return i;
+            }
         }
 
         /// <summary>
@@ -22,78 +45,67 @@ namespace Task1
         {
             get
             {
-                if (i < 0 || i > Degree)
-                {
+                if (i < 0 || i > Degree+1)
                     throw new ArgumentOutOfRangeException($"{nameof(i)} can't be <0 and can't be bigger tham Degree.");
-                }
+                
                 return coefficients[i];
             }
             set
             {
-                if (i < 0 || i > Degree)
-                {
+                if (i < 0 || i > Degree+1)
                     throw new ArgumentOutOfRangeException($"{nameof(i)} can't be <0 and can't be bigger tham Degree.");
-                }
+                
                 coefficients[i] = value;
             }
+        }
+
+        static Polynomial()
+        {
+            Epsilon = double.Parse(ConfigurationManager.AppSettings["epsilon"]);
         }
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="coefficients">Array of double.</param>
-        public Polynomial(double[] coefficients)
+        public Polynomial(params double[] coefficients)
         {
-            if (coefficients == null)
-            {
-                throw new ArgumentNullException($"Argument {coefficients} is null.");
-            }
+            if (ReferenceEquals(coefficients,null))
+                throw new ArgumentNullException(nameof(coefficients));
 
             if (coefficients.Length == 0)
-            {
-                throw new ArgumentException($"Argument {coefficients} is empty.");
-            }
+                throw new ArgumentException($"Argument {nameof(coefficients)} is empty.");
 
             this.coefficients = new double[coefficients.Length];
-
-            for (int i = 0; i < coefficients.Length; i++)
-            {
-                this[i] = coefficients[i];
-            }
+            coefficients.CopyTo(this.coefficients,0);
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="p">Polynomial object.</param>
-        public Polynomial(Polynomial p)
+        public Polynomial(Polynomial polynomial)
         {
-            if (p == null)
-            {
-                throw new ArgumentNullException($"Argument {p} is null.");
-            }
+            if (polynomial == null)
+                throw new ArgumentNullException(nameof(polynomial));
 
-            coefficients = new double[p.Degree];
-
-            for (int i = 0; i < p.Degree; i++)
-            {
-                this[i] = p[i];
-            }
+            coefficients = new double[polynomial.Degree+1];
+            
+            for (int i = 0; i < polynomial.Degree+1; i++)
+                this[i] = polynomial[i];         
         }
 
         /// <summary>
         /// Calculate polynomial for the value of x.
         /// </summary>
-        public double Calculate(double x)
+        public double Calculate(double x)=>
+            coefficients.Select((t, i) => t * Math.Pow(x, i)).Sum();
+
+        public static Polynomial operator +(Polynomial polynomial)
         {
-            double result = 0;
-
-            for(int i = 0; i < Degree; i++)
-            {
-                result = result + this[i] * Math.Pow(x, i);
-            }
-
-            return result;
+            if (ReferenceEquals(polynomial, null))
+                throw new ArgumentNullException(nameof(polynomial));
+            return polynomial;
         }
 
         /// <summary>
@@ -101,15 +113,11 @@ namespace Task1
         /// </summary>
         public static Polynomial operator +(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
-            if (firstPolynomial == null)
-            {
-                throw new ArgumentNullException($"Argument {firstPolynomial} is null.");
-            }
+            if (ReferenceEquals(firstPolynomial, null))
+                throw new ArgumentNullException(nameof(firstPolynomial));
 
-            if (secondPolynomial == null)
-            {
-                throw new ArgumentNullException($"Argument {secondPolynomial} is null.");
-            }
+            if (ReferenceEquals(secondPolynomial, null))
+                throw new ArgumentNullException(nameof(secondPolynomial));
 
             Polynomial maxDegreePolynomial = firstPolynomial.Degree > secondPolynomial.Degree ? firstPolynomial : secondPolynomial;
             Polynomial minDegreePolynomial = firstPolynomial.Degree < secondPolynomial.Degree ? firstPolynomial : secondPolynomial;
@@ -121,28 +129,57 @@ namespace Task1
             return result;
         }
 
+        public static Polynomial operator +(Polynomial polynomial, double x)
+        {
+            if (ReferenceEquals(polynomial, null))
+                throw new ArgumentNullException(nameof(polynomial));
+            Polynomial result = new Polynomial(polynomial);
+            for (int i = 0; i < polynomial.Degree + 1; i++)
+                result [i] += x;
+            return result;
+        }
+
+        public static Polynomial operator +(double x, Polynomial polynomial)
+        {
+            return polynomial + x;
+        }
+
+        public static Polynomial operator -(Polynomial polynomial)
+        {
+            if (ReferenceEquals(polynomial, null))
+                throw new ArgumentNullException(nameof(polynomial));
+            return polynomial*(-1);
+        }
+
         /// <summary>
         /// Finds subtraction of two polynomials.
         /// </summary>
         public static Polynomial operator -(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
-            if (firstPolynomial == null)
-            {
-                throw new ArgumentNullException($"Argument {firstPolynomial} is null.");
-            }
+            if (ReferenceEquals(firstPolynomial, null))
+                throw new ArgumentNullException(nameof(firstPolynomial));
 
-            if (secondPolynomial == null)
-            {
-                throw new ArgumentNullException($"Argument {secondPolynomial} is null.");
-            }
+            if (ReferenceEquals(secondPolynomial, null))
+                throw new ArgumentNullException(nameof(secondPolynomial));
 
-            Polynomial subtrahendPolynomial = new Polynomial(secondPolynomial);
-            for (int i = 0; i < subtrahendPolynomial.Degree; i++)
-            {
-                subtrahendPolynomial[i] = -subtrahendPolynomial[i];
-            }
-            Polynomial result = firstPolynomial + subtrahendPolynomial;
+            return firstPolynomial + (-secondPolynomial);
+        }
+
+        public static Polynomial operator -(Polynomial polynomial, double x)
+        {
+            if (ReferenceEquals(polynomial, null))
+                throw new ArgumentNullException(nameof(polynomial));
+            Polynomial result = new Polynomial(polynomial);
+            for (int i = 0; i < polynomial.Degree + 1; i++)
+                result[i] -= x;
             return result;
+        }
+
+        public static Polynomial operator -(double x, Polynomial polynomial)
+        {
+            if (ReferenceEquals(polynomial, null))
+                throw new ArgumentNullException(nameof(polynomial));
+            return x + (-polynomial);
         }
 
         /// <summary>
@@ -150,26 +187,37 @@ namespace Task1
         /// </summary>
         public static Polynomial operator *(Polynomial firstPolynomial, Polynomial secondPolynomial)
         {
-            if (firstPolynomial == null)
-            {
-                throw new ArgumentNullException($"Argument {firstPolynomial} is null.");
-            }
+            if (ReferenceEquals(firstPolynomial, null))
+                throw new ArgumentNullException(nameof(firstPolynomial));
 
-            if (secondPolynomial == null)
-            {
-                throw new ArgumentNullException($"Argument {secondPolynomial} is null.");
-            }
+            if (ReferenceEquals(secondPolynomial, null))
+                throw new ArgumentNullException(nameof(secondPolynomial));
 
             double[] resultArray = new double[firstPolynomial.Degree + secondPolynomial.Degree -1];
             Polynomial result = new Polynomial(resultArray);
             for (int i = 0; i < firstPolynomial.Degree; i++)
             {
                 for (int j = 0; j < secondPolynomial.Degree; j++)
-                {
                     result[i + j] += firstPolynomial[i] * secondPolynomial[j];
-                }
             }
             return result;
+        }
+
+        public static Polynomial operator *(Polynomial polynomial, double x)
+        {
+            if (ReferenceEquals(polynomial, null))
+                throw new ArgumentNullException(nameof(polynomial));
+            Polynomial result = new Polynomial(polynomial);
+            for (int i = 0; i < polynomial.Degree + 1; i++)
+                result[i] *= x;
+            return result;
+        }
+
+        public static Polynomial operator *(double x, Polynomial polynomial)
+        {
+            if (ReferenceEquals(polynomial, null))
+                throw new ArgumentNullException(nameof(polynomial));
+            return polynomial * x;
         }
 
         /// <summary>
